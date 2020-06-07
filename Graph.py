@@ -92,28 +92,19 @@ class Graph(dict):
             #unprocessed.remove(v)
             
         
-
-
 class RandomGraph(Graph):
     def add_random_edges(self, p):
-        p = int(p * 10)
-        q = 10 - p
-        choices = [True for i in range(p)] + [False for i in range(q)]
-        edges = []
-        for v in self.keys():
-            if not random.choice(choices):
-                continue
+        edge_count = int(len(list(self.vertices())) * p)
+        for v in self.vertices():
+            for i in range(edge_count):
+                other = list(self.vertices())
+                other.remove(v)
+                w = random.choice(other)
+                if self[v].get(w, None) or self[w].get(v, None):
+                    continue
+                self.add_edge(Edge(v, w))
 
-            for w in self.keys():
-                e = Edge(v,w)
-                
-                if not e in edges and v.label != w.label:
-                    edges.append(e)                  
-                    self.add_edge(e)
         
-        
-
-
 class Vertex(object):
     def __init__(self, label=''):
         self.label=label
